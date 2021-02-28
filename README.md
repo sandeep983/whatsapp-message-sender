@@ -6,7 +6,7 @@ Requirements:
 
 Python3
  -Selenium
-Chrome
+Google Chrome 
 Chromedriver
 
 
