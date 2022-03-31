@@ -5,36 +5,42 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 import time
 
+
 browser = webdriver.Chrome()
 browser.get('https://web.whatsapp.com')
-time.sleep(14)
+time.sleep(15)
+
 
 wait = WebDriverWait(browser, 600)
-
+# if we use nextline character -> (\n), two messages will be sent. Because whatsapp web uses enter to send
 message = "Hello\nThis msg is sent using Python"
 
+
 def send_msg():
-    browser.find_element_by_class_name('_whatsapp_www__block_action')
-    continue_to_chat_btn = browser.find_element_by_class_name('_whatsapp_www__block_action')
+    #continue to chat button
+    continue_to_chat_btn = browser.find_element(By.CLASS_NAME, '_a37m')
     continue_to_chat_btn.click()
     time.sleep(1)
 
-    use_waweb_btn = browser.find_element_by_link_text('use WhatsApp Web')
+    #use whatsapp web button
+    use_waweb_btn = browser.find_element(By.LINK_TEXT, 'use WhatsApp Web')
     use_waweb_btn.click()
-    time.sleep(5)
+    time.sleep(4)
 
-    inp_xpath = '//div[@class="_3FRCZ copyable-text selectable-text"][@dir="ltr"][@data-tab="1"]'
+    #for finding the path of input message box on whatsapp web
+    inp_xpath = '//div[@class="_13NKt copyable-text selectable-text"][@dir="ltr"][@data-tab="10"]'
     input_box = wait.until(EC.presence_of_element_located((By.XPATH, inp_xpath))) 
-
     input_box.send_keys(message + Keys.ENTER)
 
-numbers = []
-with open('numbers.txt', mode='r') as file:
-    numbers = file.readlines()
 
-for i in range(2):
-    browser.get(f'https://wa.me/91{numbers[i]}')
-    send_msg()
-    time.sleep(2)
+try:
+    with open('numbers.txt', mode='r') as file:
+        numbers = file.readlines()
+        for i in range(len(numbers)):
+            browser.get(f'https://wa.me/91{numbers[i]}')
+            send_msg()
+            time.sleep(3)
+except Exception as e:
+    print(f'{e}\n"numbers.txt" file was not found')
 
 browser.quit()
