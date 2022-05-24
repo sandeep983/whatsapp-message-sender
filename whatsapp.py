@@ -43,4 +43,4 @@ try:
 except Exception as e:
     print(f'{e}\n"numbers.txt" file was not found')
 
-browser.quit()
+browser.close()
